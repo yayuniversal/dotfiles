@@ -1,0 +1,7 @@
+[user]
+	name = Lilian Mallardeau
+	email = lilianmallardeau@gmail.com
+[init]
+	defaultBranch = main
+[core]
+	excludesfile = ~/.gitignore

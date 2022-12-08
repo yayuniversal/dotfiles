@@ -1,0 +1,34 @@
+#!/bin/bash
+# Bash script to hibernate then reboot into another OS
+# Must be run as root
+
+OS_BOOTNUM=0000
+SYSTEM_SLEEP_FOLDER="/usr/lib/systemd/system-sleep"
+
+if [[ $# -ge 1 ]]; then
+    OS_BOOTNUM="$1"
+fi
+
+if [[ $EUID -ne 0 ]]; then
+    if ! pkexec $0; then
+        echo "This script must be run as root"
+        exit 1
+    fi
+    exit
+fi
+
+mkdir -p /etc/systemd/sleep.conf.d
+echo -e "[Sleep]\nHibernateMode=reboot" > /etc/systemd/sleep.conf.d/hibernate-then-reboot.conf
+
+cat > $SYSTEM_SLEEP_FOLDER/disable-reboot-after-hibernate << 'EOF'
+#!/bin/bash
+if [ "$1" == "post" ] && [ "$2" == "hibernate" ]; then
+    rm /etc/systemd/sleep.conf.d/hibernate-then-reboot.conf
+    rmdir --ignore-fail-on-non-empty /etc/systemd/sleep.conf.d/
+    rm $0
+fi
+EOF
+chmod +x $SYSTEM_SLEEP_FOLDER/disable-reboot-after-hibernate
+
+efibootmgr --bootnext $OS_BOOTNUM
+systemctl hibernate

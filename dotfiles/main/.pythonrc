@@ -1,0 +1,6 @@
+#!/usr/bin/env python3
+try:
+    from rich import pretty
+    pretty.install()
+except:
+    pass

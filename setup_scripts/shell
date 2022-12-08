@@ -1,0 +1,24 @@
+#!/bin/bash
+cd $(dirname $(dirname ${BASH_SOURCE[0]}))
+
+# Symlink ~/.shell_profile to profile
+TARGET="$(realpath profile)"
+echo "Symlinking ~/.shell_profile to $TARGET"
+ln -sri "$TARGET" ~/.shell_profile
+
+# Source ~/.shell_profile in ~/.bashrc and ~/.zshrc
+CONTENT=$(cat << EOF
+
+# Custom aliases and definitions
+if [ -f ~/.shell_profile ]; then
+    . ~/.shell_profile
+fi
+EOF
+)
+
+for RCFILE in ~/.bashrc ~/.zshrc; do
+    if [[ -f $RCFILE ]]; then
+        echo "Adding custom aliases and definitions to $RCFILE"
+        echo "$CONTENT" >> $RCFILE
+    fi
+done
