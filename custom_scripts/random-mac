@@ -1,0 +1,12 @@
+#!/bin/bash
+# Bash script to set a random MAC address to the specified network interface
+
+INTERFACE=wlo1
+
+if [[ $# -ge 1 ]]; then
+    INTERFACE="$1"
+fi
+
+sudo ip link set dev $INTERFACE down
+sudo macchanger -r $INTERFACE
+sudo ip link set dev $INTERFACE up

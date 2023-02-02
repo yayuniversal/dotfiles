@@ -18,7 +18,11 @@ EOF
 
 for RCFILE in ~/.bashrc ~/.zshrc; do
     if [[ -f $RCFILE ]]; then
-        echo "Adding custom aliases and definitions to $RCFILE"
-        echo "$CONTENT" >> $RCFILE
+        if ! grep -q ". ~/.shell_profile" $RCFILE; then
+            echo "Adding custom aliases and definitions to $RCFILE"
+            echo "$CONTENT" >> $RCFILE
+        else
+            echo "Already sourcing ~/.shell_profile in $RCFILE"
+        fi
     fi
 done

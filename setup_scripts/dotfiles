@@ -13,7 +13,7 @@ setup_dotfiles_group() {
     fi
 
     # Making symlinks to files in the dotfiles group
-    for file in $(find -type f); do
+    for file in $(find -type f -not -path "*/.git/*"); do
         target=$(realpath --relative-to . "$file")
         mkdir -p "$(dirname "$HOME/$target")"
         if [[ -L $HOME/$target ]]; then

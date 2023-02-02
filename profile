@@ -15,6 +15,7 @@ alias unfreeze='kill -SIGCONT $(getpid)'
 which bat > /dev/null && alias cat='bat'
 which batcat > /dev/null && alias cat='batcat'
 which code > /dev/null || alias code='codium'
+alias clip='xclip -sel clip'
 
 # Custom functions
 function xopen {
