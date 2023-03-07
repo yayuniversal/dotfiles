@@ -16,6 +16,8 @@ which bat > /dev/null && alias cat='bat'
 which batcat > /dev/null && alias cat='batcat'
 which code > /dev/null || alias code='codium'
 alias clip='xclip -sel clip'
+alias build='cmakebuild'
+alias rp='realpath'
 
 # Custom functions
 function xopen {
@@ -24,10 +26,12 @@ function xopen {
 		xdg-open $i
 	done
 }
-function build {
-	if [[ $(basename "$(pwd)") != build ]]; then
-		mkdir -p build
-		cd build
+function cmakebuild {
+	if [[ $(basename "$(pwd)") = build ]]; then
+		cmake . &&
+		cmake --build .
+	else
+		cmake -B build &&
+		cmake --build build
 	fi
-	cmake .. && make -j4
 }
