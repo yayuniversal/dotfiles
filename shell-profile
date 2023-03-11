@@ -26,6 +26,14 @@ function xopen {
 		xdg-open $i
 	done
 }
+function ogrep {
+	local args
+	while (($#)); do
+		args="$args -e $1"
+		shift
+	done
+	cat | eval grep $args
+}
 function cmakebuild {
 	if [[ $(basename "$(pwd)") = build ]]; then
 		cmake . &&
