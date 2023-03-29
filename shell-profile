@@ -43,3 +43,8 @@ function cmakebuild {
 		cmake --build build
 	fi
 }
+
+# Environment variables
+if [[ "$TMUX" ]]; then
+	export LESS="-R --mouse"
+fi

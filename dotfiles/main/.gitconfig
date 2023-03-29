@@ -5,3 +5,5 @@
 	defaultBranch = main
 [core]
 	excludesfile = ~/.gitignore
+[alias]
+	yolo = !git commit -m \"$(curl -sL whatthecommit.com/index.txt)\"
