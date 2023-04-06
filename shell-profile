@@ -18,6 +18,7 @@ which code > /dev/null || alias code='codium'
 alias clip='xclip -sel clip'
 alias build='cmakebuild'
 alias rp='realpath'
+alias '?'='echo $?'
 
 # Custom functions
 function xopen {
