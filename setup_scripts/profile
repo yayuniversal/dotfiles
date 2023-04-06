@@ -2,12 +2,19 @@
 cd $(dirname $(dirname ${BASH_SOURCE[0]}))
 
 TARGET="~/$(realpath --relative-to $HOME profile)"
+CONTENT=$(cat << EOF
+
+# Custom variables
+if [ -f $TARGET ]; then
+    . $TARGET
+fi
+EOF
+)
 
 if [[ -f ~/.profile ]]; then
-    if ! grep -q "$TARGET" ~/.profile; then
+    if ! grep -q ". $TARGET" ~/.profile; then
         echo "Adding $TARGET to ~/.profile"
-        echo -e "\n# Custom variables" >> ~/.profile
-        echo "[[ -f $TARGET ]] && source $TARGET" >> ~/.profile
+        echo "$CONTENT" >> ~/.profile
     else
         echo "Already sourcing $TARGET in ~/.profile"
     fi
