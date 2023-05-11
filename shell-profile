@@ -19,6 +19,7 @@ alias clip='xclip -sel clip'
 alias build='cmakebuild'
 alias rp='realpath'
 alias '?'='echo $?'
+alias setpinasdate='ssh root@pinas date -s \"$(date -R)\"'
 
 # Custom functions
 function xopen {
@@ -43,6 +44,9 @@ function cmakebuild {
 		cmake -B build &&
 		cmake --build build
 	fi
+}
+function randompass {
+	python3 -c "import string, random; print(''.join(random.choices(string.ascii_letters + string.digits, k=${1:-10})))"	
 }
 
 # Environment variables
