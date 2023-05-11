@@ -1,0 +1,74 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+    config.vm.box = "debian/bullseye64"
+
+    # ------------ Networking ------------ #
+    # Create a private network, with host-only access to the machine
+    config.vm.network "private_network", ip: "192.168.33.10"
+    # Create a public network (bridged network)
+    config.vm.network "public_network"
+    
+    # Forward ports (with public access to the opened port)
+    config.vm.network "forwarded_port", guest: 80, host: 8080
+    # Forward ports (without public access to the opened port)
+    config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+
+    # ------------ Folder sharing ------------ #
+    config.vm.synced_folder "<host_folder>", "<guest_mount>"
+    # To disable the default folder share
+    config.vm.synced_folder '.', '/vagrant', disabled: true
+
+    # ------------ Provider-specific configuration ------------ #
+    # VirtualBox
+    config.vm.provider "virtualbox" do |vb|
+        vb.gui = true  # Display the VirtualBox GUI when booting the machine
+        vb.memory = "1024"
+        vb.linked_clone = true  # To build VMs more quickly
+    end
+    
+    # Libvirt
+    # https://vagrant-libvirt.github.io/vagrant-libvirt/configuration.html
+    config.vm.provider "libvirt" do |libvirt|
+        libvirt.cpus = 4
+        libvirt.memory = "1024"  # 512 by default
+    end
+
+    # ------------ Provisioning ------------ #
+    # With a shell script
+    config.vm.provision "shell", inline: <<-SHELL
+        apt-get update
+        apt-get install -y apache2
+    SHELL
+
+    # With Ansible
+    config.vm.provision "ansible" do |ansible|
+        ansible.verbose = "v"
+        ansible.playbook = "playbook.yml"
+    end
+    
+    # ------------ SSH config ------------ #
+    # To disable inserting a newly generated SSH key and keep the Vagrant default insecure key
+    config.ssh.insert_key = false
+
+    # ------------ Cluster of VMs ------------ #
+    # Define multiple VM
+    config.vm.define "vm1" do |vm1|
+        vm1.vm.hostname = "vm1.local"
+        vm1.vm.network "private_network", ip: "192.168.121.10"
+    end
+
+    config.vm.define "vm2" do |vm2|
+        vm2.vm.hostname = "vm2.local"
+        vm2.vm.network "private_network", ip: "192.168.121.11"
+    end
+
+    # In a loop
+    (1..3).each do |i|
+        config.vm.define "node-#{i}" do |node|
+            node.vm.provision "shell",
+            inline: "echo Hello from node #{i}"
+        end
+    end
+end
