@@ -7,3 +7,5 @@
 	excludesfile = ~/.gitignore
 [alias]
 	yolo = !git commit -m \"$(curl -sL whatthecommit.com/index.txt)\"
+	ignore = update-index --assume-unchanged
+	unignore = update-index --no-assume-unchanged
