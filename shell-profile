@@ -48,6 +48,13 @@ function cmakebuild {
 function randompass {
 	python3 -c "import string, random; print(''.join(random.choices(string.ascii_letters + string.digits, k=${1:-10})))"	
 }
+function pdfcompress {
+	if [ $# -ne 2 ]; then
+		echo "Usage: pdfcompress <input_file.pdf> <output_file.pdf>" 1>&2
+		return 1
+	fi
+	gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS="/ebook" -dNOPAUSE -dQUIET -dBATCH -sOutputFile="$2" "$1"
+}
 
 # Environment variables
 if [[ "$TMUX" ]]; then
