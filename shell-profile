@@ -21,6 +21,8 @@ alias rp='realpath'
 alias '?'='echo $?'
 alias setpinasdate='ssh root@pinas date -s \"$(date -R)\"'
 alias ipecho='curl ipecho.net/plain'
+alias lower='tr "[:upper:]" "[:lower:]"'
+alias upper='tr "[:lower:]" "[:upper:]"'
 
 # Custom functions
 function xopen {
