@@ -20,6 +20,7 @@ alias build='cmakebuild'
 alias rp='realpath'
 alias '?'='echo $?'
 alias setpinasdate='ssh root@pinas date -s \"$(date -R)\"'
+alias ipecho='curl ipecho.net/plain'
 
 # Custom functions
 function xopen {
