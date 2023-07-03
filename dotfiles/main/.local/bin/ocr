@@ -1,0 +1,10 @@
+#!/bin/bash
+
+tmp_id=$(mktemp -u XXXXXX)
+tmp_screenshot="/tmp/Screenshot_$tmp_id.png"
+
+gnome-screenshot -a -f "$tmp_screenshot"
+mogrify -modulate 100,0 -resize 400% "$tmp_screenshot"
+tesseract "$tmp_screenshot" - "$@" | xclip -selection clipboard -i
+notify-send "OCR Done!"
+rm -f "$tmp_screenshot"
