@@ -1,0 +1,21 @@
+#!/bin/bash
+# Workaround around a bug in gnome-screenshot preventing to capture screenshot into clipboard.
+# This script is meant to be used as a drop-in replacement for gnome-screenshot.
+
+clipboard=false
+
+for opt in "$@"; do
+    if [ $opt = "-c" ] || [ $opt = "--clipboard" ]; then
+        clipboard=true
+        break
+    fi
+done
+
+if [ $clipboard = true ]; then
+    tmp_file=$(mktemp -u /tmp/Screenshot_XXXXXX.png)
+    gnome-screenshot "$@" -f "$tmp_file"
+    xclip -selection clipboard -t image/png -i "$tmp_file"
+    rm "$tmp_file"
+else
+    gnome-screenshot "$@"
+fi
