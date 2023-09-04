@@ -23,6 +23,7 @@ alias setpinasdate='ssh root@pinas date -s \"$(date -R)\"'
 alias ipecho='curl ipecho.net/plain'
 alias lower='tr "[:upper:]" "[:lower:]"'
 alias upper='tr "[:lower:]" "[:upper:]"'
+alias nvrun='__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia'
 
 # Custom functions
 function xopen {
