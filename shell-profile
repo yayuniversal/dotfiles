@@ -59,6 +59,20 @@ function pdfcompress {
 	fi
 	gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS="/ebook" -dNOPAUSE -dQUIET -dBATCH -sOutputFile="$2" "$1"
 }
+function pdfunlock {
+	if [ $# -lt 1 ]; then
+		echo "Usage: pdfunlock <input_files.pdf>" 1>&2
+		return 1
+	fi
+	echo -n "Enter PDF password: "
+	read -s password
+	echo
+	while (($#)); do
+		echo "Unlocking $1..."
+		gs -q -sPDFPassword="$password" -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile="$(basename "$1" .pdf)_unlocked.pdf" "$1"
+		shift
+	done
+}
 
 # Environment variables
 if [[ "$TMUX" ]]; then
