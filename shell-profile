@@ -76,6 +76,22 @@ function pdfunlock {
 		shift
 	done
 }
+function commandsfrom {
+	if [ $# -lt 1 ]; then
+		echo "Usage: commandsfrom <package> [...]"
+		return 1
+	fi
+	local regexp=$(echo "$PATH" | sed 's/:/|/g')
+	dpkg -L "$@" | grep --color=never -E "$regexp" | grep -vxE "$regexp"
+}
+function wherefrom {
+	if [ $# -lt 1 ]; then
+		echo "Usage: wherefrom <command> [...]"
+		return 1
+	fi
+	[[ -n $(/bin/which "$@") ]] || { echo "None of the supplied command where found in PATH"; return 2; }
+	dpkg -S $(/bin/which "$@")
+}
 
 # Environment variables
 if [[ "$TMUX" ]]; then
