@@ -2,7 +2,9 @@
 VENVS_LOCATION="$HOME/.local/venvs"
 DEFAULT_VENV=".venv"
 
-alias lsvenv="ls $VENVS_LOCATION"
+function lsvenv {
+    ls -1 --color=never "$VENVS_LOCATION"
+}
 
 function mkvenv {
     if [[ $# -eq 0 ]]; then
