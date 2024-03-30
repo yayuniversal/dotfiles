@@ -1,4 +1,4 @@
-TEMPLATE_FOLDER="$(realpath "$(dirname $(realpath ${BASH_SOURCE[0]:-${(%):-%x}}))/../templates")"
+TEMPLATE_FOLDER="$HOME/Templates"
 
 function template {
     if [ $# -lt 1 ]; then
