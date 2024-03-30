@@ -2,20 +2,20 @@
 cd $(dirname ${BASH_SOURCE[0]})
 
 if [[ $# -eq 0 ]]; then
-    for setup_script in setup-scripts/*; do
-        [[ -x $setup_script ]] || chmod +x "$setup_script"
-        echo "Setting up $(basename "$setup_script")..."
-        "$setup_script"
-        echo
+    for script in setup-scripts/*; do
+        if [[ -f $script && -x $script ]]; then
+            echo "Setting up $(basename "$script")..."
+            "$script"
+            echo
+        fi
     done
 else
-    if [[ -f setup-scripts/$1 ]]; then
-        [[ -x setup-scripts/$1 ]] || chmod +x "setup-scripts/$1"
-        setup_script="setup-scripts/$1"
+    script="setup-scripts/$1"
+    if [[ -f $script ]]; then
         shift
-        "$setup_script" "$@"
+        "$script" "$@"
     else
-        echo "No setup script with name \"$1\" found"
+        echo "No setup script with name \"$1\" found" >&2
         exit 1
     fi
 fi

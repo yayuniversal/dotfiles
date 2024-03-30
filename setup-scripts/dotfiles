@@ -31,6 +31,7 @@ if [[ $# -eq 0 ]]; then
         if [[ -d $group ]]; then
             echo "Setting up dotfiles group $(basename "$group")..."
             setup_dotfiles_group "$(basename "$group")"
+            echo
         fi
     done
 else
@@ -38,6 +39,7 @@ else
         if [[ -d dotfiles/$1 ]]; then
             echo "Setting up dotfiles group $1..."
             setup_dotfiles_group "$1"
+            echo
         else
             echo "$1: this dotfiles group doesn't exist"
         fi 
