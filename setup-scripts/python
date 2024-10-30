@@ -1,4 +1,0 @@
-#!/bin/bash
-pip install --user pipx
-pip install --user virtualenv
-pip install --user rich
