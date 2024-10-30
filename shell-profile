@@ -27,6 +27,7 @@ alias lower='tr "[:upper:]" "[:lower:]"'
 alias upper='tr "[:lower:]" "[:upper:]"'
 alias nvrun='__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia'
 alias setpinasdate='ssh -A pinas sudo date -s \"$(date -R)\"'
+alias lzd='lazydocker'
 
 # Custom functions
 function xopen {
