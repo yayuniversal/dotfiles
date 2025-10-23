@@ -1,0 +1,14 @@
+[Desktop Entry]
+Comment=
+Exec=sandisk-zpool-import
+Icon=usb-creator-kde
+Name=Import sandisk zpool
+NoDisplay=false
+Path=
+PrefersNonDefaultGPU=false
+StartupNotify=false
+Terminal=false
+TerminalOptions=
+Type=Application
+X-KDE-SubstituteUID=false
+X-KDE-Username=

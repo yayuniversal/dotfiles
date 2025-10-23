@@ -1,0 +1,14 @@
+[Desktop Entry]
+Comment=
+Exec=sh -c 'plasma-apply-colorscheme BreezeLight && plasma-apply-wallpaperimage ~/Pictures/Wallpapers/light'
+Icon=preferences-desktop-theme-global
+Name=Light theme
+NoDisplay=false
+Path=
+PrefersNonDefaultGPU=false
+StartupNotify=false
+Terminal=false
+TerminalOptions=
+Type=Application
+X-KDE-SubstituteUID=false
+X-KDE-Username=

@@ -1,0 +1,14 @@
+[Desktop Entry]
+Comment=
+Exec=sh -c 'plasma-apply-colorscheme BreezeDark && plasma-apply-wallpaperimage ~/Pictures/Wallpapers/dark'
+Icon=preferences-desktop-plasma-theme
+Name=Dark theme
+NoDisplay=false
+Path=
+PrefersNonDefaultGPU=false
+StartupNotify=false
+Terminal=false
+TerminalOptions=
+Type=Application
+X-KDE-SubstituteUID=false
+X-KDE-Username=

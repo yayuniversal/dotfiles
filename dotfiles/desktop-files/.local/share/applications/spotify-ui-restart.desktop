@@ -1,0 +1,14 @@
+[Desktop Entry]
+Comment=
+Exec=sh -c 'kill -CONT $(pgrep -f "spotify --type=renderer")'
+Icon=spotify
+Name=Restart Spotify UI
+NoDisplay=false
+Path=
+PrefersNonDefaultGPU=false
+StartupNotify=false
+Terminal=false
+TerminalOptions=
+Type=Application
+X-KDE-SubstituteUID=false
+X-KDE-Username=
