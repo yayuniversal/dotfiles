@@ -1,10 +1,9 @@
 #!/bin/bash
-
-tmp_id=$(mktemp -u XXXXXX)
+tmp_id="$(mktemp -u XXXXXX)"
 tmp_screenshot="/tmp/Screenshot_$tmp_id.png"
 
-gnome-screenshot -a -f "$tmp_screenshot"
+spectacle --background --nonotify --region --output "$tmp_screenshot"
 mogrify -modulate 100,0 -resize 400% "$tmp_screenshot"
-tesseract "$tmp_screenshot" - "$@" | xclip -selection clipboard -i
-notify-send "OCR Done!"
+tesseract "$tmp_screenshot" - "$@" | wl-copy
+notify-send -i gtk-ok -a "OCR" "OCR Done"
 rm -f "$tmp_screenshot"
