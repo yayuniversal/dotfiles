@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+from datetime import datetime
+from pathlib import Path
+import argparse
+import sys
+
+import colorama
+
+DEFAULT_OUTPUT_FMT = "%Y-%m-%d_%H.%M.%S"
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        prog='filename-date-reformat',
+        description='Parse datetimes from filenames using a specified format string and rename files according to a new format'
+    )
+
+    parser.add_argument("-i", "--input-fmt", help="Original filename format, as per https://strftime.org", type=str)
+    parser.add_argument("-o", "--output-fmt", default=DEFAULT_OUTPUT_FMT, help=f"New filename format, as per https://strftime.org (default: {DEFAULT_OUTPUT_FMT.replace('%', '%%')})", type=str)
+    parser.add_argument("-n", "--dry-run", default=False, action="store_true", help="Dry run, don't rename files, just show how files would be renamed")
+    parser.add_argument("files", nargs='+', help="Files to rename", type=Path)
+    args = parser.parse_args()
+
+    for file in args.files:
+        if not file.exists():
+            print(f"{file} not found", file=sys.stderr)
+            exit(1)
+
+    for file in args.files:
+        try:
+            filedate = datetime.strptime(file.stem, args.input_fmt)
+        except:
+            print(f"Unable to parse date for {file} using specified format, ignoring", file=sys.stderr)
+            continue
+
+        newname = datetime.strftime(filedate, args.output_fmt)
+        newpath = file.with_stem(newname)
+
+        if newpath.exists():
+            print(f"Renaming {file} would override {newpath}, ignoring", file=sys.stderr)
+            continue
+
+        print(f"{colorama.Fore.YELLOW}{file}{colorama.Fore.RESET} -> {colorama.Fore.BLUE}{newpath}{colorama.Fore.RESET}")
+
+        if not args.dry_run:
+            file.rename(newpath)
+
+
+if __name__ == '__main__':
+    main()
