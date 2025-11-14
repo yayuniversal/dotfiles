@@ -15,16 +15,17 @@ function dotfile {
     shift
 
     case $action in 
-        list|ls)
-            realpath --relative-to $DOTFILES/dotfiles $(find $DOTFILES/dotfiles -type f -not -path "*/.git/*") | \
+        (list|ls)
+            find "$DOTFILES/dotfiles" -type f -not -path "*/.git/*" -print0 | \
+		        xargs -0 -n 1 realpath --relative-to "$DOTFILES/dotfiles" | \
                 awk -F '/' '{ print $1 ": " gensub($1, "~", 1, $0 ) }'
             ;;
         
-        groups)
+        (groups)
             basename -a $(find $DOTFILES/dotfiles/* -maxdepth 0 -type d)
             ;;
         
-        add)
+        (add)
             if [[ $# -lt 1 ]]; then
                 echo "Usage: dotfile add <file> [<dotfile_group>]" >&2
                 return 1
@@ -40,29 +41,29 @@ function dotfile {
             fi
 
             target_path="$DOTFILES/dotfiles/$dotfile_group/$(realpath --relative-to="$HOME" "$1")"
-            mkdir -p "$(dirname $target_path)"
+            mkdir -p "$(dirname "$target_path")"
             mv "$1" "$target_path"
             ln -sr "$target_path" "$1"
             ;;
         
-        create)
+        (create)
             if [[ $# -lt 1 ]]; then
                 echo "Usage: dotfile create <file> [<dotfile_group>]" 1>&2
                 return 1
             fi
             
-            touch $1
-            dotfile add $@
+            touch "$1"
+            dotfile add "$@"
             ;;
         
-        rm)
+        (rm)
             if [[ $# -lt 1 ]]; then
                 echo "Usage: dotfile rm <file>" 1>&2
                 return 1
             fi
 
-            if [[ $(realpath $1) = $DOTFILES/dotfiles/* ]]; then
-                rm "$(realpath $1)"
+            if [[ $(realpath "$1") = $DOTFILES/dotfiles/* ]]; then
+                rm "$(realpath "$1")"
                 rm "$1"
             else
                 echo "$1 isn't a symlink to a registered dotfile" >&2
@@ -70,7 +71,7 @@ function dotfile {
             fi
             ;;
         
-        rmgroup)
+        (rmgroup)
             if [[ $# -lt 1 ]]; then
                 echo "Usage: dotfile rmgroup <group>" 1>&2
                 return 1
@@ -84,7 +85,7 @@ function dotfile {
             fi
             ;;
 
-        *)
+        (*)
             usage
             return 1
             ;;
