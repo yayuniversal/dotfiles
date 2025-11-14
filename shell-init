@@ -1,6 +1,0 @@
-DOTFILES="$(dirname $(realpath ${BASH_SOURCE[0]:-${(%):-%x}}))"
-
-# Load plugins
-for plugin in $DOTFILES/shell-plugins/*; do
-	source "$plugin"
-done

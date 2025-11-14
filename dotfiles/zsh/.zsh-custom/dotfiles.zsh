@@ -1,3 +1,4 @@
+DOTFILES="$HOME/.dotfiles"
 DOTFILES_DEFAULT_GROUP=main
 
 function dotfile {
