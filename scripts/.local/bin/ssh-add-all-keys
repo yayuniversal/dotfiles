@@ -1,0 +1,4 @@
+#!/bin/bash
+export SSH_ASKPASS="$(which ksshaskpass)"
+export SSH_ASKPASS_REQUIRE=force
+ssh-add $(find ~/.ssh/keys -type f ! -name "*.pub")
