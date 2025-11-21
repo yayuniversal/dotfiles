@@ -1,12 +1,15 @@
 function zfs-recurse-rollback {
-    if [[ $# -ne 2 ]]; then
-        echo "Usage: zfs-recurse-rollback <dataset> <snapshot>" 1>&2
+    parent_dataset=$(echo "$1" | cut -f1 -d@ -s)
+    snapshot=$(echo "$1" | cut -f2 -d@ -s)
+
+    if [[ $# -ne 1 || -z $parent_dataset || -z $snapshot ]]; then
+        echo "Usage: zfs-recurse-rollback dataset@snapshot" 1>&2
         return 1
     fi
-    dataset="$1"
-    snapshot="$2"
 
-    zfs list -rH -t filesystem -o name "$dataset" | xargs -I _ sudo zfs rollback -r "_@$snapshot"
+    for dataset in $(zfs list -rH -t filesystem -o name "$parent_dataset"); do
+        sudo zfs rollback -r "${dataset}@${snapshot}"
+    done
 }
 
 function zfs-autosnap-destroy {
