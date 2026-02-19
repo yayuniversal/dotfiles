@@ -10,6 +10,7 @@ plugins=(
     archlinux
     colored-man-pages
     command-not-found
+    fzf
     git
     python
     sudo
