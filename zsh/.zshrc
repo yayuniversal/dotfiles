@@ -12,6 +12,7 @@ plugins=(
     command-not-found
     fzf
     git
+    gitignore
     python
     sudo
     vagrant
