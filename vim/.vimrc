@@ -7,3 +7,4 @@ set noswapfile
 set hlsearch
 set ignorecase
 set incsearch
+set rnu
