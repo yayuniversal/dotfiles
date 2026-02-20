@@ -3,7 +3,10 @@ tmp_id="$(mktemp -u XXXXXX)"
 tmp_screenshot="/tmp/Screenshot_$tmp_id.png"
 
 spectacle --background --nonotify --region --output "$tmp_screenshot"
-mogrify -modulate 100,0 -resize 400% "$tmp_screenshot"
-tesseract "$tmp_screenshot" - "$@" | wl-copy
-notify-send -i gtk-ok -a "OCR" "OCR Done"
-rm -f "$tmp_screenshot"
+
+if [ -f "$tmp_screenshot" ]; then
+    mogrify -modulate 100,0 -resize 400% "$tmp_screenshot"
+    tesseract "$tmp_screenshot" - "$@" | wl-copy
+    notify-send -i gtk-ok -a "OCR" "OCR Done"
+    rm -f "$tmp_screenshot"
+fi
