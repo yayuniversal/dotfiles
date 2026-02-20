@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+Actions=vscode
+MimeType=inode/directory;application/octet-stream;
+X-KDE-Priority=TopLevel
+
+[Desktop Action vscode]
+Name=Open in VS Code
+Exec=/usr/bin/code %U
+Icon=visual-studio-code

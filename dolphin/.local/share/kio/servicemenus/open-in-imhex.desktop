@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+Actions=imhex
+MimeType=application/octet-stream
+X-KDE-Priority=TopLevel
+
+[Desktop Action imhex]
+Name=Open in ImHex
+Exec=/usr/bin/imhex %U
+Icon=imhex
