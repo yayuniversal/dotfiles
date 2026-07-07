@@ -1,2 +1,2 @@
 #!/bin/bash
-pkexec zpool import sandisk && xdg-open /sandisk
+sudo zpool import sandisk && xdg-open /sandisk || notify-send -i gtk-no -a "SanDisk zpool import" "Error while importing zpool" 

@@ -1,2 +1,4 @@
 #!/bin/bash
-pkexec zpool export sandisk && notify-send "zpool export sandisk: ✅" || notify-send "zpool export sandisk: ❌"
+sudo zpool export sandisk && \
+notify-send -i gtk-yes -a "SanDisk zpool export" "Export successful" || \
+notify-send -i gtk-no  -a "SanDisk zpool export" "Export unsuccessful"
