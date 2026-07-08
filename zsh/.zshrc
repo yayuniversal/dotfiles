@@ -2,7 +2,6 @@ export ZSH="$HOME/.oh-my-zsh"
 
 ZSH_THEME="flazz"
 HYPHEN_INSENSITIVE="true"
-ENABLE_CORRECTION="true"
 HIST_STAMPS="dd.mm.yyyy"
 ZSH_CUSTOM=~/.zsh-custom
 
@@ -21,3 +20,4 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
+bindkey -v
