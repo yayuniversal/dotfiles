@@ -2,6 +2,7 @@ export WATCH_INTERVAL=0.1
 export VAGRANT_DEFAULT_PROVIDER=libvirt
 export CMAKE_BUILD_PARALLEL_LEVEL=$(nproc)
 export EDITOR=nvim
+export LIBVIRT_DEFAULT_URI="qemu:///system"
 
 if [ -z "$SSH_CONNECTION" ]; then
     export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
