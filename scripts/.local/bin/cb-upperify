@@ -1,0 +1,2 @@
+#!/bin/bash
+wl-paste | tr "[:lower:]" "[:upper:]" | wl-copy
