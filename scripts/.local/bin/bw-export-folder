@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Check for required tools
+for cmd in bw jq; do
+    if ! command -v "$cmd" &> /dev/null; then
+        echo "Error: Required command '$cmd' is not installed." >&2
+        exit 1
+    fi
+done
+
+usage() {
+    echo "Usage: $0 [options] \"<folder_name>\" [output_filename.json]" >&2
+    echo "Options:" >&2
+    echo "  -a, --append <string>   String to append to each item name" >&2
+    echo "  -p, --prepend <string>  String to prepend to each item name" >&2
+}
+
+PREPEND_TEXT=""
+APPEND_TEXT=""
+
+# Parse command line options
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -a|--append)
+            APPEND_TEXT="$2"
+            shift 2
+            ;;
+        -p|--prepend)
+            PREPEND_TEXT="$2"
+            shift 2
+            ;;
+        -h|--help)
+            usage
+            exit
+            ;;
+        -*)
+            echo "Error: Unknown option $1" >&2
+            usage
+            exit 1
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
+if [ $# -lt 1 ]; then
+    usage
+    exit 1
+fi
+
+FOLDER_NAME="$1"
+OUTPUT_FILE="${2:-"${FOLDER_NAME// /_}_export.json"}"
+
+# Check vault status
+STATUS=$(bw status ${BW_SESSION:+--session "$BW_SESSION"} | jq -r .status)
+
+if [ "$STATUS" = "unauthenticated" ]; then
+    echo "Error: Bitwarden CLI is not logged in. Please run 'bw login' first." >&2
+    exit 1
+elif [ "$STATUS" = "locked" ]; then
+    echo "Vault is locked. Prompting for master password..." >&2
+    BW_SESSION="$(bw unlock --raw)"
+    export BW_SESSION
+fi
+
+# Fetch Folder ID
+FOLDER_ID=$(bw list folders | jq -r --arg NAME "$FOLDER_NAME" '.[] | select(.name == $NAME) | .id' | head -n 1)
+
+if [ -z "$FOLDER_ID" ] || [ "$FOLDER_ID" == "null" ]; then
+    echo "Error: Folder '$FOLDER_NAME' not found in vault." >&2
+    exit 1
+fi
+
+# Extract items, modify names, strip folderId, and format as Bitwarden JSON
+bw list items --folderid "$FOLDER_ID" | jq \
+  --arg prepend "$PREPEND_TEXT" \
+  --arg append "$APPEND_TEXT" \
+  '{
+    "encrypted": false,
+    "items": map(
+      del(.folderId) | .name = ($prepend + .name + $append)
+    )
+  }' > "$OUTPUT_FILE"
+
+echo "Success: Exported folder '$FOLDER_NAME' to '$OUTPUT_FILE'"
