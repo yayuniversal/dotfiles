@@ -9,15 +9,21 @@ plugins=(
     archlinux
     colored-man-pages
     command-not-found
+    docker
+    docker-compose
     fzf
     git
     gitignore
+    glab
+    kubectl
+    opentofu
     python
+    scw
     sudo
+    terraform
     vagrant
     zsh-autosuggestions
     zsh-syntax-highlighting
 )
 
 source $ZSH/oh-my-zsh.sh
-bindkey -v
